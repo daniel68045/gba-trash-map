@@ -1,8 +1,8 @@
 # Environmental variables
 .env
 
-# Virtual environment (Backend)
-backend/.venv/
+# Virtual environment (Backend use only)
+.venv/
 
 # Frontend dependencies
 frontend/node_modules/
