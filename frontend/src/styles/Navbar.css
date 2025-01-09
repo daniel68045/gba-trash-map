@@ -1,0 +1,55 @@
+/* Navbar-specific styles */
+
+.navbar {
+  height: 60px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: transparent;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.navbar-light {
+  background-color: rgba(255, 255, 255, 0.0001);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  color: #333;
+}
+
+.navbar-dark {
+  background-color: rgba(0, 0, 0, 0.0001);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+.navbar-title {
+  margin: 0;
+  font-family: "Montserrat", "Helvetica", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.navbar-toggle {
+  padding: 40px;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: "Montserrat", "Helvetica", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.navbar-light .navbar-toggle {
+  color: #333;
+}
+
+.navbar-dark .navbar-toggle {
+  color: #fff;
+}

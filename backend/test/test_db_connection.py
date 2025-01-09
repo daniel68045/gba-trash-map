@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine
 
-# Test db connection script
 
 DATABASE_URL = "postgresql://postgres:Clairofan132?@localhost/trash_tracker"
 
