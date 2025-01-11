@@ -1,14 +1,17 @@
 import React from "react";
 
-const Navbar = ({ toggleMode, isDarkMode }) => {
+const Navbar = ({ toggleMode, toggleDashboard, isDarkMode }) => {
   return (
     <div className={`navbar ${isDarkMode ? "navbar-dark" : "navbar-light"}`}>
-      <h2 className="navbar-title">The Greater Boston Area Trash Map</h2>
+      <h2 className="navbar-title">Trash Map of Greater Boston</h2>
       <div className="navbar-buttons">
-        <button className="navbar-button" onClick={() => alert("Navigate to About page")}>
+        <button
+          className="navbar-button"
+          onClick={() => alert("Navigate to About page")}
+        >
           About
         </button>
-        <button className="navbar-button" onClick={() => alert("Open Dashboard dropdown")}>
+        <button className="navbar-button" onClick={toggleDashboard}>
           Dashboard
         </button>
         <button className="navbar-toggle" onClick={toggleMode}>

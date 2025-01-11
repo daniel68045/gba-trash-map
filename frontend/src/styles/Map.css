@@ -129,6 +129,7 @@
 }
 
 /* Leaflet popup styles */
+
 .leaflet-popup-content-wrapper {
   background-color: rgba(255, 255, 255, 0.0001);
   backdrop-filter: blur(5px);
@@ -190,6 +191,7 @@
 }
 
 /* Temporary marker popup form styles */
+
 .leaflet-popup-content form {
   display: flex;
   flex-direction: column;

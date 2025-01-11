@@ -1,0 +1,47 @@
+/* Dashboard-specific styles */
+
+.dashboard-container {
+  font-family: "Montserrat", "Helvetica", sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: rgba(255, 255, 255, 0.0001);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 1000;
+}
+
+[data-theme="dark"] .dashboard-container {
+  background-color: rgba(0, 0, 0, 0.0001);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.dashboard-log-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dashboard-log-item {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .dashboard-log-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-log-item:last-child {
+  border-bottom: none;
+}
