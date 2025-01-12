@@ -244,7 +244,7 @@
 }
 
 .leaflet-popup-content button[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: #2a4460;
 }
 
 [data-theme="dark"] .leaflet-popup-content button[type="submit"] {
