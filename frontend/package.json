@@ -11,9 +11,9 @@
     "leaflet.markercluster": "^1.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-icons": "^5.4.0",
     "react-leaflet": "^5.0.0",
     "react-leaflet-markercluster": "^5.0.0-rc.0",
+    "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
     "typeface-montserrat": "^1.1.13",
     "web-vitals": "^2.1.4"

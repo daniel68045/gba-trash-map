@@ -6,24 +6,35 @@
   font-weight: normal;
   position: fixed;
   top: 60px;
-  right: 20px;
-  width: 300px;
+  left: auto;
   max-height: 400px;
   overflow-y: auto;
   background-color: rgba(255, 255, 255, 0.0001);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+  border-radius: 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   padding: 10px;
   z-index: 1000;
+  width: 240px;
+  margin-left: auto;
+  right: 20px;
 }
 
 [data-theme="dark"] .dashboard-container {
+  width: 225px;
   background-color: rgba(0, 0, 0, 0.0001);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
+}
+
+.dashboard-container h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  color: inherit;
 }
 
 .dashboard-log-list {
@@ -44,4 +55,10 @@
 
 .dashboard-log-item:last-child {
   border-bottom: none;
+}
+
+.dashboard-log-item p {
+  margin: 0;
+  font-weight: normal;
+  color: inherit;
 }

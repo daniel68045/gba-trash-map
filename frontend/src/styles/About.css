@@ -1,0 +1,52 @@
+/* About page styles */
+
+.about-container {
+  font-family: "Montserrat", "Helvetica", sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  position: relative;
+  top: 0;
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px 40px;
+  line-height: 1.6;
+  color: black;
+  background-color: rgba(240, 240, 240, 1);
+  backdrop-filter: blur(5px);
+  border: none;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+[data-theme="dark"] .about-container {
+  color: white;
+  background-color: rgba(20, 20, 20, 1);
+}
+
+.about-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.about-container p {
+  margin-bottom: 20px;
+}
+
+.back-button {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  font-family: "Montserrat", "Helvetica", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background-color: #375a7f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.back-button:hover {
+  background-color: #2a4561;
+}
