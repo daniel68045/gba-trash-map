@@ -7,6 +7,7 @@ import {
   useMap,
   useMapEvents,
 } from "react-leaflet";
+import { LocateControl } from "leaflet.locatecontrol";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet/dist/leaflet.css";
 import "leaflet.locatecontrol/dist/L.Control.Locate.min.css";
@@ -19,7 +20,7 @@ const createCustomIcon = (theme) =>
     iconAnchor: [6, 6],
   });
 
-const LocateToTarget = memo(({ targetLocation }) => {
+const LocateToTarget = ({ targetLocation }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -30,7 +31,35 @@ const LocateToTarget = memo(({ targetLocation }) => {
   }, [map, targetLocation]);
 
   return null;
-});
+};
+
+const LocateButton = ({ homeZoom }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    const locateControl = new LocateControl({
+      position: "topleft",
+      flyTo: true,
+      keepCurrentZoomLevel: false,
+      setView: true,
+      showCompass: true,
+      strings: {
+        title: "Show me where I am!",
+      },
+      locateOptions: {
+        maxZoom: homeZoom,
+      },
+    });
+
+    locateControl.addTo(map);
+
+    return () => {
+      locateControl.remove();
+    };
+  }, [map, homeZoom]);
+
+  return null;
+};
 
 const TrashMarkers = memo(({ trashLogs, theme, removeLog }) => (
   <MarkerClusterGroup>
@@ -184,6 +213,7 @@ const Map = memo(
             url={mapStyle}
             attribution='&copy; <a href="https://carto.com/">CartoDB</a>, <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
           />
+          <LocateButton homeZoom={homeZoom} />
           <LocateToTarget targetLocation={targetLocation} />
           <MapEvents setTempMarker={setTempMarker} />
           <TrashMarkers
