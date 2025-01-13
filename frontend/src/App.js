@@ -7,24 +7,41 @@ import "./styles/Navbar.css";
 import "./styles/Map.css";
 import "./styles/Dashboard.css";
 import "./styles/About.css";
+import "leaflet/dist/leaflet.css";
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
   const [trashLogs, setTrashLogs] = useState([]);
   const [currentPage, setCurrentPage] = useState("map");
+  const [targetLocation, setTargetLocation] = useState(null);
 
   const lightModeStyle =
     "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
   const darkModeStyle =
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
 
-  const toggleMode = () => {
-    setIsDarkMode(!isDarkMode);
+  const toggleMode = () => setIsDarkMode(!isDarkMode);
+  const toggleDashboard = () => setIsDashboardOpen(!isDashboardOpen);
+
+  const locateMarker = (lat, lng) => {
+    setTargetLocation({ lat, lng });
   };
 
-  const toggleDashboard = () => {
-    setIsDashboardOpen(!isDashboardOpen);
+  const removeLog = async (logId) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/logs/${logId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the log.");
+      }
+
+      setTrashLogs((prevLogs) => prevLogs.filter((log) => log.id !== logId));
+    } catch (error) {
+      console.error("Error deleting the log:", error.message);
+    }
   };
 
   return (
@@ -41,8 +58,16 @@ const App = () => {
             mapStyle={isDarkMode ? darkModeStyle : lightModeStyle}
             isDarkMode={isDarkMode}
             setLogs={setTrashLogs}
+            targetLocation={targetLocation}
+            removeLog={removeLog}
+            trashLogs={trashLogs}
           />
-          <Dashboard logs={trashLogs} isOpen={isDashboardOpen} />
+          <Dashboard
+            logs={trashLogs}
+            isOpen={isDashboardOpen}
+            locateMarker={locateMarker}
+            removeLog={removeLog}
+          />
         </>
       )}
       {currentPage === "about" && (

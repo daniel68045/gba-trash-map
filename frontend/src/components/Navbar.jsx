@@ -8,7 +8,7 @@ const Navbar = ({
 }) => {
   return (
     <div className={`navbar ${isDarkMode ? "navbar-dark" : "navbar-light"}`}>
-      <h2 className="navbar-title">Trash Map of Greater Boston</h2>
+      <h2 className="navbar-title">Greater Boston Trash Map</h2>
       <div className="navbar-buttons">
         <button className="navbar-button" onClick={navigateToAbout}>
           About

@@ -43,6 +43,17 @@ def get_trash_logs():
     return jsonify(logs_list), 200
 
 
+@api.route("/logs/<int:log_id>", methods=["DELETE"])
+def delete_trash_log(log_id):
+    log = TrashLog.query.get(log_id)
+    if not log:
+        return jsonify({"error": "Log not found"}), 404
+
+    db.session.delete(log)
+    db.session.commit()
+    return jsonify({"message": "Log deleted successfully", "id": log_id}), 200
+
+
 @api.route("/", methods=["GET"])
 def home():
     return jsonify({"message": "Landing page... no route specified"}), 200

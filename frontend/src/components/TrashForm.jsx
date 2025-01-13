@@ -1,1 +1,0 @@
-// Form to log trash

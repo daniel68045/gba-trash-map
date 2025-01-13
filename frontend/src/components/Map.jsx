@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, memo } from "react";
+import React, { useEffect, useState, memo } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -19,6 +19,19 @@ const createCustomIcon = (theme) =>
     html: `<div class="custom-map-marker ${theme}"></div>`,
     iconAnchor: [6, 6],
   });
+
+const LocateToTarget = ({ targetLocation }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (targetLocation) {
+      const { lat, lng } = targetLocation;
+      map.setView([lat, lng], 16, { animate: true });
+    }
+  }, [map, targetLocation]);
+
+  return null;
+};
 
 const LocateButton = ({ homeZoom }) => {
   const map = useMap();
@@ -48,25 +61,37 @@ const LocateButton = ({ homeZoom }) => {
   return null;
 };
 
-const TrashMarkers = memo(({ trashLogs, theme }) => {
-  return (
-    <MarkerClusterGroup>
-      {trashLogs.map((log) => (
-        <Marker
-          key={log.id}
-          position={[log.latitude, log.longitude]}
-          icon={createCustomIcon(theme)}
-        >
-          <Popup>
-            <strong>{log.description}</strong>
-            <br />
-            Date: {new Date(log.created_at).toLocaleDateString()}
-          </Popup>
-        </Marker>
-      ))}
-    </MarkerClusterGroup>
-  );
-});
+const TrashMarkers = memo(({ trashLogs, theme, removeLog }) => (
+  <MarkerClusterGroup>
+    {trashLogs.map((log) => (
+      <Marker
+        key={log.id}
+        position={[log.latitude, log.longitude]}
+        icon={createCustomIcon(theme)}
+      >
+        <Popup>
+          <strong>{log.description}</strong>
+          <br />
+          Date: {new Date(log.created_at).toLocaleDateString()}
+          <br />
+          <button
+            onClick={() => removeLog(log.id)}
+            style={{
+              padding: "5px 10px",
+              backgroundColor: "red",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Remove
+          </button>
+        </Popup>
+      </Marker>
+    ))}
+  </MarkerClusterGroup>
+));
 
 const TemporaryMarker = memo(({ tempMarker, setTempMarker, handleSubmit }) => {
   const [tempDescription, setTempDescription] = useState("");
@@ -107,81 +132,57 @@ const TemporaryMarker = memo(({ tempMarker, setTempMarker, handleSubmit }) => {
   );
 });
 
-const Map = ({ mapStyle, isDarkMode, setLogs }) => {
-  const [trashLogs, setTrashLogs] = useState([]);
+const MapEvents = ({ setTempMarker }) => {
+  useMapEvents({
+    contextmenu(e) {
+      setTempMarker({
+        lat: e.latlng.lat,
+        lng: e.latlng.lng,
+      });
+    },
+  });
+
+  return null;
+};
+
+const Map = ({
+  mapStyle,
+  isDarkMode,
+  setLogs,
+  targetLocation,
+  removeLog,
+  trashLogs,
+}) => {
   const [tempMarker, setTempMarker] = useState(null);
   const homeCoords = [42.3601, -71.0589];
   const homeZoom = 13;
 
-  const theme = isDarkMode ? "dark" : "light";
+  const handleSubmit = async (marker, description) => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/logs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          latitude: marker.lat,
+          longitude: marker.lng,
+          description: description,
+        }),
+      });
 
-  useEffect(() => {
-    const fetchLogs = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:5000/logs", {
-          mode: "cors",
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to fetch trash logs: ${response.statusText}`);
-        }
-        const data = await response.json();
-        setTrashLogs(data);
-        setLogs(data);
-      } catch (error) {
-        console.error("Error fetching trash logs:", error.message);
+      if (!response.ok) {
+        throw new Error("Failed to submit trash log.");
       }
-    };
 
-    fetchLogs();
-  }, [setLogs]);
+      const newLog = await response.json();
 
-  const MapEvents = () => {
-    useMapEvents({
-      contextmenu(e) {
-        setTempMarker({
-          lat: e.latlng.lat,
-          lng: e.latlng.lng,
-        });
-      },
-    });
-    return null;
+      setLogs((prevLogs) => [...prevLogs, newLog]);
+      setTempMarker(null);
+    } catch (error) {
+      console.error("Error submitting trash log:", error.message);
+    }
   };
-
-  const handleFormSubmit = useCallback(
-    async (marker, description) => {
-      try {
-        const response = await fetch("http://127.0.0.1:5000/logs", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            latitude: marker.lat,
-            longitude: marker.lng,
-            description: description,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to submit trash log.");
-        }
-
-        const newLog = await response.json();
-
-        setTrashLogs((prevLogs) => {
-          const updatedLogs = [...prevLogs, newLog];
-          setLogs(updatedLogs);
-          console.log("Updated trashLogs:", updatedLogs);
-          return updatedLogs;
-        });
-
-        setTempMarker(null);
-      } catch (error) {
-        console.error("Error submitting trash log:", error.message);
-      }
-    },
-    [setLogs]
-  );
 
   return (
     <div className="map-container">
@@ -197,14 +198,18 @@ const Map = ({ mapStyle, isDarkMode, setLogs }) => {
           url={mapStyle}
           attribution='&copy; <a href="https://carto.com/">CartoDB</a>, <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
         />
-
         <LocateButton homeZoom={homeZoom} />
-        <MapEvents />
-
-        <TrashMarkers trashLogs={trashLogs} theme={theme} />
+        <LocateToTarget targetLocation={targetLocation} />
+        <MapEvents setTempMarker={setTempMarker} />
+        <TrashMarkers
+          trashLogs={trashLogs}
+          theme={isDarkMode ? "dark" : "light"}
+          removeLog={removeLog}
+        />
         <TemporaryMarker
           tempMarker={tempMarker}
-          handleSubmit={handleFormSubmit}
+          setTempMarker={setTempMarker}
+          handleSubmit={handleSubmit}
         />
       </MapContainer>
     </div>
