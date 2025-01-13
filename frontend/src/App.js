@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Navbar from "./components/Navbar";
 import Map from "./components/Map";
 import Dashboard from "./pages/Dashboard";
@@ -21,14 +21,17 @@ const App = () => {
   const darkModeStyle =
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
 
-  const toggleMode = () => setIsDarkMode(!isDarkMode);
-  const toggleDashboard = () => setIsDashboardOpen(!isDashboardOpen);
+  const toggleMode = useCallback(() => setIsDarkMode((prev) => !prev), []);
+  const toggleDashboard = useCallback(
+    () => setIsDashboardOpen((prev) => !prev),
+    []
+  );
 
-  const locateMarker = (lat, lng) => {
+  const locateMarker = useCallback((lat, lng) => {
     setTargetLocation({ lat, lng });
-  };
+  }, []);
 
-  const removeLog = async (logId) => {
+  const removeLog = useCallback(async (logId) => {
     try {
       const response = await fetch(`http://127.0.0.1:5000/logs/${logId}`, {
         method: "DELETE",
@@ -42,7 +45,7 @@ const App = () => {
     } catch (error) {
       console.error("Error deleting the log:", error.message);
     }
-  };
+  }, []);
 
   return (
     <div data-theme={isDarkMode ? "dark" : "light"}>

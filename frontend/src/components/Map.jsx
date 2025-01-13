@@ -7,7 +7,6 @@ import {
   useMap,
   useMapEvents,
 } from "react-leaflet";
-import { LocateControl } from "leaflet.locatecontrol";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet/dist/leaflet.css";
 import "leaflet.locatecontrol/dist/L.Control.Locate.min.css";
@@ -20,7 +19,7 @@ const createCustomIcon = (theme) =>
     iconAnchor: [6, 6],
   });
 
-const LocateToTarget = ({ targetLocation }) => {
+const LocateToTarget = memo(({ targetLocation }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -31,35 +30,7 @@ const LocateToTarget = ({ targetLocation }) => {
   }, [map, targetLocation]);
 
   return null;
-};
-
-const LocateButton = ({ homeZoom }) => {
-  const map = useMap();
-
-  useEffect(() => {
-    const locateControl = new LocateControl({
-      position: "topleft",
-      flyTo: true,
-      keepCurrentZoomLevel: false,
-      setView: true,
-      showCompass: true,
-      strings: {
-        title: "Show me where I am!",
-      },
-      locateOptions: {
-        maxZoom: homeZoom,
-      },
-    });
-
-    locateControl.addTo(map);
-
-    return () => {
-      locateControl.remove();
-    };
-  }, [map, homeZoom]);
-
-  return null;
-};
+});
 
 const TrashMarkers = memo(({ trashLogs, theme, removeLog }) => (
   <MarkerClusterGroup>
@@ -132,7 +103,7 @@ const TemporaryMarker = memo(({ tempMarker, setTempMarker, handleSubmit }) => {
   );
 });
 
-const MapEvents = ({ setTempMarker }) => {
+const MapEvents = memo(({ setTempMarker }) => {
   useMapEvents({
     contextmenu(e) {
       setTempMarker({
@@ -143,77 +114,92 @@ const MapEvents = ({ setTempMarker }) => {
   });
 
   return null;
-};
+});
 
-const Map = ({
-  mapStyle,
-  isDarkMode,
-  setLogs,
-  targetLocation,
-  removeLog,
-  trashLogs,
-}) => {
-  const [tempMarker, setTempMarker] = useState(null);
-  const homeCoords = [42.3601, -71.0589];
-  const homeZoom = 13;
+const Map = memo(
+  ({ mapStyle, isDarkMode, setLogs, targetLocation, removeLog, trashLogs }) => {
+    const [tempMarker, setTempMarker] = useState(null);
+    const homeCoords = [42.3601, -71.0589];
+    const homeZoom = 13;
 
-  const handleSubmit = async (marker, description) => {
-    try {
-      const response = await fetch("http://127.0.0.1:5000/logs", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          latitude: marker.lat,
-          longitude: marker.lng,
-          description: description,
-        }),
-      });
+    useEffect(() => {
+      const fetchLogs = async () => {
+        try {
+          const response = await fetch("http://127.0.0.1:5000/logs", {
+            mode: "cors",
+          });
+          if (!response.ok) {
+            throw new Error(
+              `Failed to fetch trash logs: ${response.statusText}`
+            );
+          }
 
-      if (!response.ok) {
-        throw new Error("Failed to submit trash log.");
+          const data = await response.json();
+          setLogs(data);
+        } catch (error) {
+          console.error("Error fetching trash logs:", error.message);
+        }
+      };
+
+      fetchLogs();
+    }, [setLogs]);
+
+    const handleSubmit = async (marker, description) => {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/logs", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            latitude: marker.lat,
+            longitude: marker.lng,
+            description: description,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to submit trash log: ${response.statusText}`);
+        }
+
+        const newLog = await response.json();
+        setLogs((prevLogs) => [...prevLogs, newLog]);
+        setTempMarker(null);
+      } catch (error) {
+        console.error("Error submitting trash log:", error.message);
       }
+    };
 
-      const newLog = await response.json();
+    return (
+      <div className="map-container">
+        <MapContainer
+          center={homeCoords}
+          zoom={homeZoom}
+          minZoom={10}
+          maxZoom={18}
+          scrollWheelZoom={true}
+          className="map"
+        >
+          <TileLayer
+            url={mapStyle}
+            attribution='&copy; <a href="https://carto.com/">CartoDB</a>, <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+          />
+          <LocateToTarget targetLocation={targetLocation} />
+          <MapEvents setTempMarker={setTempMarker} />
+          <TrashMarkers
+            trashLogs={trashLogs}
+            theme={isDarkMode ? "dark" : "light"}
+            removeLog={removeLog}
+          />
+          <TemporaryMarker
+            tempMarker={tempMarker}
+            setTempMarker={setTempMarker}
+            handleSubmit={handleSubmit}
+          />
+        </MapContainer>
+      </div>
+    );
+  }
+);
 
-      setLogs((prevLogs) => [...prevLogs, newLog]);
-      setTempMarker(null);
-    } catch (error) {
-      console.error("Error submitting trash log:", error.message);
-    }
-  };
-
-  return (
-    <div className="map-container">
-      <MapContainer
-        center={homeCoords}
-        zoom={homeZoom}
-        minZoom={10}
-        maxZoom={18}
-        scrollWheelZoom={true}
-        className="map"
-      >
-        <TileLayer
-          url={mapStyle}
-          attribution='&copy; <a href="https://carto.com/">CartoDB</a>, <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
-        />
-        <LocateButton homeZoom={homeZoom} />
-        <LocateToTarget targetLocation={targetLocation} />
-        <MapEvents setTempMarker={setTempMarker} />
-        <TrashMarkers
-          trashLogs={trashLogs}
-          theme={isDarkMode ? "dark" : "light"}
-          removeLog={removeLog}
-        />
-        <TemporaryMarker
-          tempMarker={tempMarker}
-          setTempMarker={setTempMarker}
-          handleSubmit={handleSubmit}
-        />
-      </MapContainer>
-    </div>
-  );
-};
-
-export default memo(Map);
+export default Map;
