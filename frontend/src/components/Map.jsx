@@ -12,6 +12,7 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet/dist/leaflet.css";
 import "leaflet.locatecontrol/dist/L.Control.Locate.min.css";
 import "../styles/Map.css";
+import "../styles/App.css";
 import L from "leaflet";
 
 const createCustomIcon = (theme) =>
@@ -74,17 +75,7 @@ const TrashMarkers = memo(({ trashLogs, theme, removeLog }) => (
           <br />
           Date: {new Date(log.created_at).toLocaleDateString()}
           <br />
-          <button
-            onClick={() => removeLog(log.id)}
-            style={{
-              padding: "5px 10px",
-              backgroundColor: "red",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
+          <button onClick={() => removeLog(log.id)} className="shared-button">
             Remove
           </button>
         </Popup>
@@ -93,7 +84,7 @@ const TrashMarkers = memo(({ trashLogs, theme, removeLog }) => (
   </MarkerClusterGroup>
 ));
 
-const TemporaryMarker = memo(({ tempMarker, setTempMarker, handleSubmit }) => {
+const TemporaryMarker = memo(({ tempMarker, handleSubmit }) => {
   const [tempDescription, setTempDescription] = useState("");
 
   useEffect(() => {
@@ -124,7 +115,6 @@ const TemporaryMarker = memo(({ tempMarker, setTempMarker, handleSubmit }) => {
               onChange={(e) => setTempDescription(e.target.value)}
             />
           </label>
-          <br />
           <button type="submit">Submit</button>
         </form>
       </Popup>

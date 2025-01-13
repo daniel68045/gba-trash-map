@@ -1,4 +1,4 @@
-/* Global styles */
+/* Global/shared styles */
 
 body,
 html {
@@ -12,4 +12,36 @@ html {
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.shared-button {
+  width: 100%;
+  padding: 4px;
+  font-family: "Montserrat", "Helvetica", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #375a7f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.shared-button:hover {
+  background-color: #2a4460;
+}
+
+.shared-button:active {
+  background-color: #1e3247;
+}
+
+[data-theme="dark"] .shared-button {
+  background-color: #375a7f;
+}
+
+[data-theme="dark"] .shared-button:hover {
+  background-color: #2a4460;
 }

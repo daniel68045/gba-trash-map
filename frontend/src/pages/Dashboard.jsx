@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "../styles/Dashboard.css";
-
+import "../styles/App.css";
 const Dashboard = ({ logs, isOpen, locateMarker }) => {
   useEffect(() => {}, [logs, locateMarker]);
 
@@ -30,16 +30,9 @@ const Dashboard = ({ logs, isOpen, locateMarker }) => {
                   console.error("locateMarker is not defined.");
                 }
               }}
-              style={{
-                padding: "5px 10px",
-                backgroundColor: "#007bff",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
+              className="shared-button"
             >
-              Locate
+              Locate Marker
             </button>
           </li>
         ))}
