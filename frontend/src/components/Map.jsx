@@ -41,8 +41,9 @@ const LocateButton = ({ homeZoom }) => {
     const locateControl = new LocateControl({
       position: "topleft",
       flyTo: true,
+      setView: "always",
       keepCurrentZoomLevel: false,
-      setView: true,
+      initialZoomLevel: 16,
       showCompass: true,
       strings: {
         title: "Show me where I am!",
