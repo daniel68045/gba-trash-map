@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 
 
-DATABASE_URL = "postgresql://postgres:Clairofan132?@localhost/trash_tracker"
+DATABASE_URL = "postgresql://postgres.dvmobqweaombbhiwhsci:Clairofan1324@aws-0-us-east-1.pooler.supabase.com:5432/postgres"
 
 try:
     engine = create_engine(DATABASE_URL)

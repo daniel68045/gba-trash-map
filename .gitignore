@@ -1,5 +1,6 @@
 # Environmental variables
-.env
+frontend/.env
+backend/.env
 
 # Virtual environment (Backend use only)
 .venv/

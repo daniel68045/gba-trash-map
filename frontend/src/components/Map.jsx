@@ -77,7 +77,7 @@ const TrashMarkers = memo(({ trashLogs, theme, removeLog }) => (
           Date: {new Date(log.created_at).toLocaleDateString()}
           <br />
           <button onClick={() => removeLog(log.id)} className="shared-button">
-            Remove
+            Trash Gone?
           </button>
         </Popup>
       </Marker>
