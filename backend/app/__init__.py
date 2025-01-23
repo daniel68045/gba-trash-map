@@ -9,7 +9,17 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object("app.config.Config")
 
-    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+    CORS(
+        app,
+        resources={
+            r"/*": {
+                "origins": [
+                    "http://localhost:3000",
+                    "https://merry-frangipane-79fde6.netlify.app",
+                ]
+            }
+        },
+    )
 
     db.init_app(app)
 
