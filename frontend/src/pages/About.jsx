@@ -2,10 +2,6 @@ import React from "react";
 import "../styles/About.css";
 
 const About = ({ navigateToMap }) => {
-  const openEmailInNewTab = () => {
-    window.open("mailto:dpupke10@gmail.com", "_blank");
-  };
-
   return (
     <div className="about-container">
       <h1>About the Greater Boston Trash Map</h1>
