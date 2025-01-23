@@ -30,7 +30,11 @@ const About = ({ navigateToMap }) => {
       <p>
         If you are part of an organization in or around the Boston Metropolitan
         Area and have any interest or inquiries, please reach out:{" "}
-        <a href="#" onClick={openEmailInNewTab}>
+        <a
+          href="mailto:dpupke10@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           dpupke10@gmail.com
         </a>
         .
