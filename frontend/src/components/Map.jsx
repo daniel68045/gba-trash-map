@@ -145,9 +145,13 @@ const Map = memo(
     useEffect(() => {
       const fetchLogs = async () => {
         try {
-          const response = await fetch("http://127.0.0.1:5000/logs", {
-            mode: "cors",
-          });
+          const response = await fetch(
+            `${process.env.REACT_APP_API_BASE_URL}/logs`,
+            {
+              mode: "cors",
+            }
+          );
+
           if (!response.ok) {
             throw new Error(
               `Failed to fetch trash logs: ${response.statusText}`
@@ -166,17 +170,20 @@ const Map = memo(
 
     const handleSubmit = async (marker, description) => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/logs", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            latitude: marker.lat,
-            longitude: marker.lng,
-            description: description,
-          }),
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/logs`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              latitude: marker.lat,
+              longitude: marker.lng,
+              description: description,
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`Failed to submit trash log: ${response.statusText}`);
