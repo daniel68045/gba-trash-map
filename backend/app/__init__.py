@@ -39,4 +39,9 @@ def create_app():
     def handle_404(e):
         return jsonify({"error": "The requested URL was not found on the server."}), 404
 
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        """Ensure that database sessions are removed after each request."""
+        db.session.remove()
+
     return app
