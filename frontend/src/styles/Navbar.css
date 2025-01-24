@@ -76,3 +76,15 @@
 .navbar-dark .navbar-toggle {
   color: #fff;
 }
+
+/* Navbar mobile styles */
+
+@media (max-width: 768px) {
+  .navbar {
+    justify-content: center;
+  }
+
+  .navbar-title {
+    display: none;
+  }
+}

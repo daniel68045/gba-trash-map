@@ -62,3 +62,29 @@
   font-weight: normal;
   color: inherit;
 }
+
+/* Dashboard mobile styles */
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    font-family: "Montserrat", "Helvetica", sans-serif;
+    font-size: 1rem;
+    font-weight: normal;
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0.0001);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1000;
+    width: 240px;
+  }
+}
