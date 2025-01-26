@@ -15,7 +15,9 @@ def create_app():
             r"/*": {
                 "origins": [
                     "http://localhost:3000",
-                    "https://merry-frangipane-79fde6.netlify.app",
+                    "https://greaterbostontrashmap.netlify.app/",
+                    "https://greaterbostontrashmap.org",
+                    "https://www.greaterbostontrashmap.org",
                 ]
             }
         },
