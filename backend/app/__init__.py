@@ -15,7 +15,7 @@ def create_app():
             r"/*": {
                 "origins": [
                     "http://localhost:3000",
-                    "https://greaterbostontrashmap.netlify.app/",
+                    "https://greaterbostontrashmap.netlify.app",
                     "https://greaterbostontrashmap.org",
                     "https://www.greaterbostontrashmap.org",
                 ]
