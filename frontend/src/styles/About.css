@@ -4,7 +4,7 @@
   font-family: "Montserrat", "Helvetica", sans-serif;
   font-size: 1rem;
   font-weight: normal;
-  position: relative;
+  position: fixed;
   top: 0;
   width: 100%;
   min-height: 100vh;
@@ -16,6 +16,7 @@
   border: none;
   box-shadow: none;
   box-sizing: border-box;
+  z-index: 10;
 }
 
 [data-theme="dark"] .about-container {

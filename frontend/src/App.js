@@ -52,30 +52,26 @@ const App = () => {
 
   return (
     <div data-theme={isDarkMode ? "dark" : "light"}>
-      {currentPage === "map" && (
-        <>
-          <Navbar
-            toggleMode={toggleMode}
-            isDarkMode={isDarkMode}
-            toggleDashboard={toggleDashboard}
-            navigateToAbout={() => setCurrentPage("about")}
-          />
-          <Map
-            mapStyle={isDarkMode ? darkModeStyle : lightModeStyle}
-            isDarkMode={isDarkMode}
-            setLogs={setTrashLogs}
-            targetLocation={targetLocation}
-            removeLog={removeLog}
-            trashLogs={trashLogs}
-          />
-          <Dashboard
-            logs={trashLogs}
-            isOpen={isDashboardOpen}
-            locateMarker={locateMarker}
-            removeLog={removeLog}
-          />
-        </>
-      )}
+      <Navbar
+        toggleMode={toggleMode}
+        isDarkMode={isDarkMode}
+        toggleDashboard={toggleDashboard}
+        navigateToAbout={() => setCurrentPage("about")}
+      />
+      <Map
+        mapStyle={isDarkMode ? darkModeStyle : lightModeStyle}
+        isDarkMode={isDarkMode}
+        setLogs={setTrashLogs}
+        targetLocation={targetLocation}
+        removeLog={removeLog}
+        trashLogs={trashLogs}
+      />
+      <Dashboard
+        logs={trashLogs}
+        isOpen={isDashboardOpen}
+        locateMarker={locateMarker}
+        removeLog={removeLog}
+      />
       {currentPage === "about" && (
         <About navigateToMap={() => setCurrentPage("map")} />
       )}

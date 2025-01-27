@@ -16,7 +16,7 @@
   border-radius: 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   padding: 10px;
-  z-index: 1000;
+  z-index: 0;
   width: 240px;
   margin-left: auto;
   right: 20px;
@@ -84,7 +84,7 @@
     border-radius: 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     padding: 10px;
-    z-index: 1000;
+    z-index: 0;
     width: 240px;
   }
 }

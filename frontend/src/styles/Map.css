@@ -4,12 +4,14 @@
   height: 100vh;
   width: 100%;
   background: transparent;
+  z-index: 0;
 }
 
 .map {
   height: 100%;
   width: 100%;
   background: transparent;
+  z-index: 0;
 }
 
 /* Custom leaflet styles */
@@ -24,6 +26,7 @@
   padding: 5px;
   border-radius: 4px;
   font-size: 12px;
+  z-index: 0;
 }
 
 .leaflet-container .leaflet-control-attribution a {
