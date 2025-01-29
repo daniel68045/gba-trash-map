@@ -274,3 +274,11 @@
   font-size: 12px;
   font-family: "Montserrat", "Helvetica", sans-serif;
 }
+
+@media (max-width: 768px) {
+  .info-popup {
+    bottom: 45px;
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
