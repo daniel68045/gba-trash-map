@@ -249,3 +249,28 @@
 [data-theme="dark"] .leaflet-popup-content button[type="submit"]:hover {
   background-color: #2a4460;
 }
+
+/* Info button styles */
+
+.info-button-icon {
+  font-size: 15px;
+  width: 35px;
+  height: 35px;
+  line-height: 25px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-popup {
+  position: absolute;
+  bottom: 50px;
+  left: 20px;
+  background: rgb(255, 255, 0);
+  color: rgb(0, 0, 0);
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: "Montserrat", "Helvetica", sans-serif;
+}

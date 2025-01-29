@@ -63,6 +63,55 @@ const LocateButton = ({ homeZoom }) => {
   return null;
 };
 
+const InfoButtonControl = ({ onClick }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) return;
+
+    const InfoControl = L.Control.extend({
+      options: {
+        position: "bottomleft",
+      },
+      onAdd: function () {
+        const container = L.DomUtil.create(
+          "div",
+          "leaflet-control leaflet-bar"
+        );
+        const button = L.DomUtil.create(
+          "a",
+          "leaflet-control-button",
+          container
+        );
+
+        button.innerHTML = "❓";
+        button.href = "#";
+        button.title = "More Info";
+        button.classList.add("info-button-icon");
+
+        L.DomEvent.on(button, "click", (e) => {
+          L.DomEvent.stopPropagation(e);
+          L.DomEvent.preventDefault(e);
+          if (onClick) {
+            onClick();
+          }
+        });
+
+        return container;
+      },
+    });
+
+    const infoControl = new InfoControl();
+    map.addControl(infoControl);
+
+    return () => {
+      map.removeControl(infoControl);
+    };
+  }, [map, onClick]);
+
+  return null;
+};
+
 const TrashMarkers = memo(({ trashLogs, theme, removeLog }) => (
   <MarkerClusterGroup>
     {trashLogs.map((log) => (
@@ -136,11 +185,32 @@ const MapEvents = memo(({ setTempMarker }) => {
   return null;
 });
 
+const NavigateHome = ({ resetToHome, homeCoords, homeZoom }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (resetToHome) {
+      map.setView(homeCoords, homeZoom, { animate: true });
+    }
+  }, [map, resetToHome, homeCoords, homeZoom]);
+
+  return null;
+};
+
 const Map = memo(
-  ({ mapStyle, isDarkMode, setLogs, targetLocation, removeLog, trashLogs }) => {
+  ({
+    mapStyle,
+    isDarkMode,
+    setLogs,
+    targetLocation,
+    removeLog,
+    trashLogs,
+    onInfoClick,
+    resetToHome,
+  }) => {
     const [tempMarker, setTempMarker] = useState(null);
     const homeCoords = [42.3601, -71.0589];
-    const homeZoom = 13;
+    const homeZoom = 14;
 
     useEffect(() => {
       const fetchLogs = async () => {
@@ -224,6 +294,12 @@ const Map = memo(
             setTempMarker={setTempMarker}
             handleSubmit={handleSubmit}
           />
+          <NavigateHome
+            resetToHome={resetToHome}
+            homeCoords={homeCoords}
+            homeZoom={homeZoom}
+          />
+          <InfoButtonControl onClick={onInfoClick} />
         </MapContainer>
       </div>
     );

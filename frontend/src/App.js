@@ -15,6 +15,8 @@ const App = () => {
   const [trashLogs, setTrashLogs] = useState([]);
   const [currentPage, setCurrentPage] = useState("map");
   const [targetLocation, setTargetLocation] = useState(null);
+  const [resetToHome, setResetToHome] = useState(false);
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
 
   const lightModeStyle =
     "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
@@ -26,6 +28,11 @@ const App = () => {
     () => setIsDashboardOpen((prev) => !prev),
     []
   );
+
+  const handleInfoClick = () => {
+    setIsInfoVisible(true);
+    setTimeout(() => setIsInfoVisible(false), 3000);
+  };
 
   const locateMarker = useCallback((lat, lng) => {
     setTargetLocation({ lat, lng });
@@ -50,6 +57,10 @@ const App = () => {
     }
   }, []);
 
+  const navigateHome = () => {
+    setResetToHome(true);
+    setTimeout(() => setResetToHome(false), 500);
+  };
   return (
     <div data-theme={isDarkMode ? "dark" : "light"}>
       <Navbar
@@ -57,14 +68,17 @@ const App = () => {
         isDarkMode={isDarkMode}
         toggleDashboard={toggleDashboard}
         navigateToAbout={() => setCurrentPage("about")}
+        navigateHome={navigateHome}
       />
       <Map
         mapStyle={isDarkMode ? darkModeStyle : lightModeStyle}
         isDarkMode={isDarkMode}
         setLogs={setTrashLogs}
         targetLocation={targetLocation}
+        resetToHome={resetToHome}
         removeLog={removeLog}
         trashLogs={trashLogs}
+        onInfoClick={handleInfoClick}
       />
       <Dashboard
         logs={trashLogs}
@@ -74,6 +88,12 @@ const App = () => {
       />
       {currentPage === "about" && (
         <About navigateToMap={() => setCurrentPage("map")} />
+      )}
+      {isInfoVisible && (
+        <div className="info-popup">
+          Right click/hold down to add a new trash marker! <br />
+          Initial requests can delay by <strong>50 seconds</strong> or more.
+        </div>
       )}
     </div>
   );
