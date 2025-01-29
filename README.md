@@ -53,5 +53,3 @@ Start React:
 ```
 npm start
 ```
-## License
-MIT
