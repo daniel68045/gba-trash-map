@@ -65,13 +65,19 @@ const LocateButton = ({ homeZoom }) => {
 
 const InfoButtonControl = ({ onClick }) => {
   const map = useMap();
+  const [controlPosition, setControlPosition] = useState(
+    window.innerWidth <= 768 ? "topleft" : "bottomleft"
+  );
 
   useEffect(() => {
     if (!map) return;
-
+    const updatePosition = () => {
+      setControlPosition(window.innerWidth <= 768 ? "topleft" : "bottomleft");
+    };
+    window.addEventListener("resize", updatePosition);
     const InfoControl = L.Control.extend({
       options: {
-        position: "bottomleft",
+        position: controlPosition,
       },
       onAdd: function () {
         const container = L.DomUtil.create(
@@ -96,7 +102,6 @@ const InfoButtonControl = ({ onClick }) => {
             onClick();
           }
         });
-
         return container;
       },
     });
@@ -106,8 +111,9 @@ const InfoButtonControl = ({ onClick }) => {
 
     return () => {
       map.removeControl(infoControl);
+      window.removeEventListener("resize", updatePosition);
     };
-  }, [map, onClick]);
+  }, [map, onClick, controlPosition]);
 
   return null;
 };

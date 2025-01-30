@@ -277,7 +277,7 @@
 
 @media (max-width: 768px) {
   .info-popup {
-    bottom: 5px;
+    bottom: 430px;
     font-size: 12px;
     padding: 6px 10px;
   }
