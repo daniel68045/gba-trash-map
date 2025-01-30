@@ -278,10 +278,9 @@
 
 @media (max-width: 768px) {
   .info-popup {
-    top: auto;
-    bottom: 440px; /* Move above the button */
+    bottom: 600px;
     left: 20px;
-    font-size: 6px; /* Slightly smaller */
+    font-size: 10px;
     padding: 6px 10px;
   }
 }
