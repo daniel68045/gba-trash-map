@@ -261,6 +261,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .info-popup {
@@ -277,8 +278,10 @@
 
 @media (max-width: 768px) {
   .info-popup {
-    bottom: 430px;
-    font-size: 12px;
+    top: auto;
+    bottom: 440px; /* Move above the button */
+    left: 20px;
+    font-size: 6px; /* Slightly smaller */
     padding: 6px 10px;
   }
 }
